@@ -1,0 +1,265 @@
+<html>
+  <head>
+    <title>framework</title>
+    <link rel="stylesheet" type="text/css" href="framework.css"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script src="questionstest.js"></script>
+    <script src="answers.js"></script>
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <div><p>Hello User</p></div>&emsp;
+      <div id="time"><p>03:00:00</p></div>
+      <div class="header-right">
+        <!-- <a href="#home">Login</a>
+        <a href="#contact">Take test</a> -->
+      </div>
+    </div>
+
+    <div style="width:100%;height:90%;"> <!-- Main Div -->
+
+      <div id="left" style="float:left; width:20%;">
+        <H3>questions answered</H3>
+        <p>
+            <button type="button"  class="w3-button w3-circle w3-red" id="b1">01</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b2">02</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b3">03</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b4">04</button><br>
+            <button type="button" class="w3-button w3-circle w3-red" id="b5">05</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b6">06</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b7">07</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b8">08</button><br>
+            <button type="button" class="w3-button w3-circle w3-red" id="b9">09</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b10">10</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b11">11</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b12">12</button><br>
+            <button type="button" class="w3-button w3-circle w3-red" id="b13">13</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b14">14</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b15">15</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b16">16</button><br>
+            <button type="button" class="w3-button w3-circle w3-red" id="b17">17</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b18">18</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b19">19</button>
+            <button type="button" class="w3-button w3-circle w3-red" id="b20">20</button><br>
+        </p>
+        <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif">
+        <input type="submit" name="submit" id="submit1">
+      </div>
+      <div  id="right" style="float:left;width:78%; margin-left:10px;">
+        <fieldset id="buildyourform">
+        <h1>&emsp; Questions Section:</h1>
+        <div id="qsec">
+        enter your hallticket number and name: <br><br>
+        <input type="text" name="htno" id="htno" value="htno"><br><br>
+        <input type="text" name="name1" id="name1" value="name"><br><br>
+        <button type="button" id="start">start the exam</button>
+        </div>
+        </fieldset>
+      </div>
+    </div>
+    <script id="templatez" type="text/x-handlebars-template">
+      <h1>{{question}}</h1>
+      <div id='gg'>
+        <input type="radio" name="{{question_no}}" value="option1">{{option1}}<br>
+        <input type="radio" name="{{question_no}}" value="option2">{{option2}}<br>
+        <input type="radio" name="{{question_no}}" value="option3">{{option3}}<br>
+        <input type="radio" name="{{question_no}}" value="option4">{{option4}}<br>
+        <button type="button" id="clickthis">next question</button>
+
+      </div>
+    </script>
+    <script>
+        $("#loader").hide();
+        var name,htno,counter=0;
+        function startTimer(duration, display) {
+          var timer = duration, hours,minutes, seconds;
+          setInterval(function () {
+          minutes = parseInt(timer /180, 10);
+          seconds = parseInt(timer % 60, 10);
+          hours=parseInt(timer/3600);
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
+          hours=hours<10?"0"+hours:hours;
+          display.textContent =hours+":"+minutes + ":" + seconds;
+
+          if (--timer < 0) {
+              timer = duration;
+          }
+          }, 1000);
+        }
+
+      window.onload = function () {
+        var fiveMinutes = 60 * 60*3,
+            display = document.querySelector('#time');
+        startTimer(fiveMinutes, display);
+      };
+
+function getCheckedRadio(what) {
+     var radioButtons = document.getElementsByName(what);
+    for (var x = 0; x < radioButtons.length; x ++) {
+      if (radioButtons[x].checked) {
+       return radioButtons[x].value;
+     }
+     }
+  };
+
+$(document).ready(function(){
+$("#start").click(function(){
+    name=$("#name1").val();
+    htno=$("#htno").val();
+    console.log(name);
+    console.log(htno);
+    var templatex=$("#templatez").html();
+    var compiledtemplatex=Handlebars.compile(templatex);
+    $("#qsec").html(compiledtemplatex(data["json"][0]));
+    console.log(compiledtemplatex(data["json"][0]));
+    var i=0,j=0;
+    var ans=[];
+    $("#clickthis").click(function(){
+      j=i+1;
+      $("#b"+j).removeClass('w3-red').addClass('w3-green');
+      console.log("value is "+ getCheckedRadio('q'+j));
+      // ans[j]=(document.getElementsByName('q'+(j)).value);
+      ans[j]=getCheckedRadio('q'+j);
+      i=i+1;
+      if(i<20){
+      $("#qsec").html(compiledtemplatex(data["json"][i]));
+      console.log(compiledtemplatex(data["json"][i]));
+      console.log(ans[j]);
+    }
+    else{
+      alert("examfinished");
+    }
+    });
+    $("#submit1").click(function(){
+      ans[0]==answers.answers1[0].q1?counter++:counter;
+      ans[1]==answers.answers1[1].q2?counter++:counter;
+      ans[2]==answers.answers1[2].q3?counter++:counter;
+      ans[3]==answers.answers1[3].q4?counter++:counter;
+      ans[4]==answers.answers1[4].q5?counter++:counter;
+      ans[5]==answers.answers1[5].q6?counter++:counter;
+      ans[6]==answers.answers1[6].q7?counter++:counter;
+      ans[7]==answers.answers1[7].q8?counter++:counter;
+      ans[8]==answers.answers1[8].q9?counter++:counter;
+      ans[9]==answers.answers1[9].q10?counter++:counter;
+      ans[10]==answers.answers1[10].q11?counter++:counter;
+      ans[11]==answers.answers1[11].q12?counter++:counter;
+      ans[12]==answers.answers1[12].q13?counter++:counter;
+      ans[13]==answers.answers1[13].q14?counter++:counter;
+      ans[14]==answers.answers1[14].q15?counter++:counter;
+      ans[15]==answers.answers1[15].q16?counter++:counter;
+      ans[16]==answers.answers1[16].q17?counter++:counter;
+      ans[17]==answers.answers1[17].q18?counter++:counter;
+      ans[18]==answers.answers1[18].q19?counter++:counter;
+      ans[19]==answers.answers1[19].q20?counter++:counter;
+      alert(counter);
+
+    });
+  });
+});
+
+if (typeof web3 !== 'undefined') {
+    web3 = new Web3(web3.currentProvider);
+}
+ else {
+    // set the provider you want from Web3.providers
+    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+}
+web3.eth.defaultAccount = web3.eth.accounts[0];
+var examcontract=web3.eth.contract([
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_marks",
+				"type": "string"
+			},
+			{
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"name": "_hallticket",
+				"type": "string"
+			}
+		],
+		"name": "upload",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "marks1",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "name1",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "hallticket1",
+				"type": "string"
+			}
+		],
+		"name": "upload1",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_hallticket1",
+				"type": "string"
+			}
+		],
+		"name": "show1",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]);
+var exam=examcontract.at('0x8b2480e8a4e8d2f4c896240813a29e7acf5187af');
+console.log(exam);
+$("#submit1").click(function(){
+$("#loader").show();
+exam.upload(counter,name,htno);//,{from:web.eth.account[0],gas:100000});
+});
+var uploadevent=exam.upload1();
+uploadevent.watch(function(error,result){
+if(!error){
+$("#loader").hide();
+}
+else{
+$("#loader").hide();
+console.log(error);
+}
+});
+
+
+   </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,24 @@
+var answers={
+  "answers1":[
+    {"q1":"option1"},
+    {"q2":"option1"},
+    {"q3":"option1"},
+    {"q4":"option1"},
+    {"q5":"option1"},
+    {"q6":"option1"},
+    {"q7":"option1"},
+    {"q8":"option1"},
+    {"q9":"option1"},
+    {"q10":"option1"},
+    {"q11":"option1"},
+    {"q12":"option1"},
+    {"q13":"option1"},
+    {"q14":"option1"},
+    {"q15":"option1"},
+    {"q16":"option1"},
+    {"q17":"option1"},
+    {"q18":"option1"},
+    {"q19":"option1"},
+    {"q20":"option1"}
+  ]
+};
